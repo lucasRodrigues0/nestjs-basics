@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreatePropertyDTO } from './dto/create-property.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -8,13 +9,19 @@ export class PropertyController {
         return "All properties";
     }
     @Get(':id')
-    findOne(@Param("id") id:string) {
+    findOne(@Param('id', ParseIntPipe) id:string) {
+        console.log(typeof(id));
         return `finding id: ${id}`;
     }
 
     @Post()
-    @HttpCode(202)
-    create(@Body() body) {
+    @UsePipes(new ValidationPipe({
+        whitelist: true, /** remove os campos que não estão definidos no DTO */
+        forbidNonWhitelisted: true /** retorna um erro caso tenha alguma propriedade não definida no DTO */
+        /**a validação também pode ocorrer diretamente no @body ao invés de usar o decorator UsePipes*/
+    }))
+    // @HttpCode(202)
+    create(@Body() body: CreatePropertyDTO) {
         return body;
     }
 }
