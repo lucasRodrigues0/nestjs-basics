@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePropertyDTO } from './dto/create-property.dto';
+import { IdParamDTO } from './dto/idParam.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -9,7 +10,7 @@ export class PropertyController {
         return "All properties";
     }
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id:string) {
+    findOne(@Param('id', ParseIntPipe) id:number) {
         console.log(typeof(id));
         return `finding id: ${id}`;
     }
@@ -22,6 +23,14 @@ export class PropertyController {
     // }))
     // @HttpCode(202)
     create(@Body() body: CreatePropertyDTO) {
+        return body;
+    }
+
+    @Patch(':id')
+    update(
+        @Param() param: IdParamDTO,
+        @Body() body: CreatePropertyDTO
+    ) {
         return body;
     }
 }

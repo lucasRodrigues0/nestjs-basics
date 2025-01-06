@@ -10,7 +10,11 @@ import { APP_PIPE } from '@nestjs/core';
       // aplica validação global apenas no módulo
       useValue: new ValidationPipe({
         whitelist: true,
-        forbidNonWhitelisted: true
+        forbidNonWhitelisted: true,
+        transform: true,
+        transformOptions: {
+          enableImplicitConversion: true
+        }
       })
     }
   ]
