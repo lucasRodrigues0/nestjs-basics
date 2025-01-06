@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
 import { CreatePropertyDTO } from './dto/create-property.dto';
-import { IdParamDTO } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdPipe';
+import { HeadersDto } from './dto/headers.dto';
+import { RequestHeader } from './pipes/request-header';
 
 @Controller('property')
 export class PropertyController {
@@ -10,6 +11,7 @@ export class PropertyController {
     findAll() {
         return "All properties";
     }
+
     @Get(':id')
     findOne(@Param('id', ParseIdPipe) id:number) {
         console.log(typeof(id));
@@ -31,8 +33,11 @@ export class PropertyController {
     update(
         // @Param() param: IdParamDTO,
         @Param('id', ParseIdPipe) id: number,
-        @Body() body: CreatePropertyDTO
+        @Body() body: CreatePropertyDTO,
+        @RequestHeader(new ValidationPipe({
+            validateCustomDecorators: true
+        })) header: HeadersDto
     ) {
-        return body;
+        return header;
     }
 }
