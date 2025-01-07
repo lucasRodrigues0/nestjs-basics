@@ -3,19 +3,23 @@ import { CreatePropertyDTO } from './dto/create-property.dto';
 import { ParseIdPipe } from './pipes/parseIdPipe';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
+import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
 
+    constructor(private service: PropertyService) {}
+
     @Get()
     findAll() {
-        return "All properties";
+        return this.service.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseIdPipe) id:number) {
-        console.log(typeof(id));
-        return `finding id: ${id}`;
+    findOne(@Param('id', ParseIdPipe) id: number) {
+        // console.log(typeof (id));
+        // return `finding id: ${id}`;
+        return this.service.findOne();
     }
 
     @Post()
@@ -26,7 +30,8 @@ export class PropertyController {
     // }))
     // @HttpCode(202)
     create(@Body() body: CreatePropertyDTO) {
-        return body;
+        // return body;
+        return this.service.create();
     }
 
     @Patch(':id')
@@ -38,6 +43,7 @@ export class PropertyController {
             validateCustomDecorators: true
         })) header: HeadersDto
     ) {
-        return header;
+        // return body;
+        return this.service.update();
     }
 }
