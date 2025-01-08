@@ -1,4 +1,3 @@
-import { Property } from "src/entities/property.entity";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 export const pgConfig: PostgresConnectionOptions = {

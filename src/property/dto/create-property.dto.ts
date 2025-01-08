@@ -12,5 +12,5 @@ export class CreatePropertyDTO {
     @IsInt()
     @IsNotEmpty()
     @IsPositive({ message: 'Area cannot be negative' })
-    area: number;
+    price: number;
 }
