@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { PropertyFeature } from "./propertyFeature.entity";
 
-@Entity({name: "tb_property"})
+@Entity({ name: "tb_property" })
 export class Property {
 
     @PrimaryGeneratedColumn()
@@ -12,6 +13,13 @@ export class Property {
     @Column()
     description: string;
 
-    @Column({default: 0})
-    price: number
+    @Column({ default: 0 })
+    price: number;
+
+    @OneToOne(
+        () => PropertyFeature,
+        (PropertyFeature) => PropertyFeature.property,
+        { cascade: true }
+    )
+    propertyFeature: PropertyFeature;
 }
