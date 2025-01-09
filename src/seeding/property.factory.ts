@@ -1,7 +1,8 @@
-import { Property } from "src/entities/property.entity";
+import { Faker } from "@faker-js/faker";
+import { Property } from "../entities/property.entity";
 import { setSeederFactory } from "typeorm-extension";
 
-export const PropertyFactory = setSeederFactory(Property, (faker) => {
+export const PropertyFactory = setSeederFactory(Property, (faker: Faker) => {
     const property = new Property();
     
     property.name = faker.location.street();
