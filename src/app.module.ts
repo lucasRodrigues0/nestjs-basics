@@ -5,9 +5,16 @@ import { PropertyModule } from './property/property.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { pgConfig } from 'dbConfig';
 import { DataSource } from 'typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PropertyModule, TypeOrmModule.forRoot(pgConfig)], 
+  imports: [
+    PropertyModule, 
+    TypeOrmModule.forRoot(pgConfig),
+    ConfigModule.forRoot({
+      isGlobal: true
+    })
+  ], 
   controllers: [AppController],
   providers: [AppService],
 })
