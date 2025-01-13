@@ -9,6 +9,6 @@ export class AppController {
   // http://localhost:3000/app/hello
   @Get('hello')
   getHello(): string {
-    return this.configService.get('NODE_ENV');
+    return this.configService.get('DB_USER');
   }
 }

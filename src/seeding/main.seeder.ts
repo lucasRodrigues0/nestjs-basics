@@ -22,11 +22,11 @@ export class MainSeeder implements Seeder {
             ]
         );
 
-        const userFactory = factoryManager.get(User);
+        // const userFactory = factoryManager.get(User);
 
-        console.log('seeding users...');
+        // console.log('seeding users...');
 
-        const users = await userFactory.saveMany(30);
+        // const users = await userFactory.saveMany(30);
 
         const propertyFactory = factoryManager.get(Property);
 
@@ -39,14 +39,13 @@ export class MainSeeder implements Seeder {
                 .fill("")
                 .map(async () => {
                     const property = await propertyFactory.make({
-                        user: faker.helpers.arrayElement(users),
+                        // user: faker.helpers.arrayElement(users),
                         type: faker.helpers.arrayElement(propertyTypes),
                         propertyFeature: await propertyFeatureFactory.save()
                     })
                     return property;
                 })
         );
-
 
         await propertyRepo.save(properties);
         
