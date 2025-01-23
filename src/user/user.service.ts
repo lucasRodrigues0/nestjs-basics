@@ -18,6 +18,12 @@ export class UserService {
     return await this.repository.save(user);
   }
 
+  async findByEmail (email: string) {
+    return await this.repository.findOne({where: {
+      email
+    }})
+  }
+
   findAll() {
     return `This action returns all user`;
   }
