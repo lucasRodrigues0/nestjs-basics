@@ -19,8 +19,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: AuthJwtPayload) {
 
-        console.log('Payload in JwtStrategy:', payload);
-
         if(!payload.sub || isNaN(payload.sub)) {
             throw new UnauthorizedException('sub invalido');
         }
