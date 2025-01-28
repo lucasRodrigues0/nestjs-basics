@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(
     @InjectRepository(User) private repository: Repository<User>
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     // para a trigger funcionar é necessário que o objeto seja criado primeiro (create) e depois seja inserido (save) no banco de dados
@@ -18,10 +18,12 @@ export class UserService {
     return await this.repository.save(user);
   }
 
-  async findByEmail (email: string) {
-    return await this.repository.findOne({where: {
-      email
-    }})
+  async findByEmail(email: string) {
+    return await this.repository.findOne({
+      where: {
+        email
+      }
+    })
   }
 
   findAll() {
@@ -29,13 +31,14 @@ export class UserService {
   }
 
   async findOne(id: number) {
-    // return await this.repository.findOne({
-    //   where: {
-    //     id: id
-    //   }
-    // });
+    const user: User = await this.repository.findOne({
+      where: {
+        id: id
+      }
+    });
+    const { password, ...data } = user;
 
-    return `id: ${id}`;
+    return data;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
