@@ -1,13 +1,16 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
-import { User } from 'src/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { AuthJwtPayload } from './types/auth-jwtPayload';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private userService: UserService) { }
+    constructor(
+        private userService: UserService,
+        private jwtService: JwtService
+    ) { }
 
     async validateUser(email: string, password: string) {
         const user = await this.userService.findByEmail(email);
@@ -23,4 +26,9 @@ export class AuthService {
         return { id: user.id };
     }
 
+    login(userId: number) {
+        const payload: AuthJwtPayload = {sub: userId}
+        return this.jwtService.sign(payload);
+    }
 }
+
