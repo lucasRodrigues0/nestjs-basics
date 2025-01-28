@@ -22,32 +22,32 @@ export class MainSeeder implements Seeder {
             ]
         );
 
-        // const userFactory = factoryManager.get(User);
+        const userFactory = factoryManager.get(User);
 
-        // console.log('seeding users...');
+        console.log('seeding users...');
 
-        // const users = await userFactory.saveMany(30);
+        const users = await userFactory.saveMany(30);
 
-        const propertyFactory = factoryManager.get(Property);
+        // const propertyFactory = factoryManager.get(Property);
 
-        const propertyFeatureFactory = factoryManager.get(PropertyFeature);
+        // const propertyFeatureFactory = factoryManager.get(PropertyFeature);
         
-        console.log('seeding properties...');
+        // console.log('seeding properties...');
 
-        const properties = await Promise.all(
-            Array(50)
-                .fill("")
-                .map(async () => {
-                    const property = await propertyFactory.make({
-                        // user: faker.helpers.arrayElement(users),
-                        type: faker.helpers.arrayElement(propertyTypes),
-                        propertyFeature: await propertyFeatureFactory.save()
-                    })
-                    return property;
-                })
-        );
+        // const properties = await Promise.all(
+        //     Array(50)
+        //         .fill("")
+        //         .map(async () => {
+        //             const property = await propertyFactory.make({
+        //                 // user: faker.helpers.arrayElement(users),
+        //                 type: faker.helpers.arrayElement(propertyTypes),
+        //                 propertyFeature: await propertyFeatureFactory.save()
+        //             })
+        //             return property;
+        //         })
+        // );
 
-        await propertyRepo.save(properties);
+        // await propertyRepo.save(properties);
         
     }
 

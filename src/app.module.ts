@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import dbConfig from './config/db.config';
 import dbConfigProduction from './config/db.config.production';
 
@@ -13,6 +14,7 @@ import dbConfigProduction from './config/db.config.production';
   imports: [
     PropertyModule,
     UserModule,
+    AuthModule,
     TypeOrmModule.forRootAsync({
       useFactory: process.env.NODE_ENV === "production" ? dbConfigProduction : dbConfig
     }),
@@ -23,7 +25,7 @@ import dbConfigProduction from './config/db.config.production';
         dbConfig,
         dbConfigProduction
       ]
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
