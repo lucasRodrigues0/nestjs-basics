@@ -14,11 +14,14 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     }
 
     validate(email: string, password: string) {
+
+        //same as return this.authService.validateUser(email, password);
+
         const user = this.authService.validateUser(email, password);
         if(!user) {
             throw new UnauthorizedException();
         }
-
+        //user = { id: user.id }
         return user;
     }
 

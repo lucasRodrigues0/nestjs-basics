@@ -37,10 +37,9 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Req() req) {
-
+    console.log(req);
     return this.userService.findOne(req.user.id);
 
-    //it is returning NaN anyways, even though it's not calling the service anymore
   }
 
 }
