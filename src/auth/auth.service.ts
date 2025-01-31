@@ -5,6 +5,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigType } from '@nestjs/config';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -29,14 +30,32 @@ export class AuthService {
         return { id: user.id };
     }
 
-    login(userId: number) {
+    async generateTokens(userId: number) {
+
         const payload: AuthJwtPayload = { sub: userId }
-        const token = this.jwtService.sign(payload);
-        const refreshToken = this.jwtService.sign(payload, this.refreshTokenConfig);
+
+        const [accessToken, refreshToken] = await Promise.all([
+            this.jwtService.signAsync(payload),
+            this.jwtService.signAsync(payload, this.refreshTokenConfig)
+        ])
 
         return {
+            accessToken, refreshToken
+        }
+
+    }
+
+    async login(userId: number) {
+
+        const {accessToken, refreshToken} = await this.generateTokens(userId);
+
+        const hashedRefreshToken = await argon2.hash(refreshToken);
+
+        await this.userService.saveRefreshToken(userId, hashedRefreshToken);
+        
+        return {
             id: userId,
-            token,
+            accessToken,
             refreshToken
         }
     }
