@@ -2,10 +2,11 @@ import { Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nes
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
@@ -20,5 +21,11 @@ export class AuthController {
   @Post('refresh')
   refreshToken(@Request() req: any) {
     return this.authService.refreshToken(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Request() req: any) {
+    this.authService.logout(req.user.id);
   }
 }

@@ -30,6 +30,24 @@ export class AuthService {
         return { id: user.id };
     }
 
+    async validateRefreshToken(userId: number, token: string) {
+        const user = await this.userService.findOne(userId);
+
+        if (!user || !user.hashedRefreshToken) {
+            throw new UnauthorizedException("Invalid Refresh token");
+        }
+
+        const refreshTokenMatches = await argon2.verify(user.hashedRefreshToken, token);
+
+        if (!this.refreshToken) {
+            throw new UnauthorizedException("Invalid Refresh token");
+        }
+
+        return {
+            id: userId
+        }
+    }
+
     async generateTokens(userId: number) {
 
         const payload: AuthJwtPayload = { sub: userId }
@@ -47,12 +65,12 @@ export class AuthService {
 
     async login(userId: number) {
 
-        const {accessToken, refreshToken} = await this.generateTokens(userId);
+        const { accessToken, refreshToken } = await this.generateTokens(userId);
 
         const hashedRefreshToken = await argon2.hash(refreshToken);
 
         await this.userService.saveRefreshToken(userId, hashedRefreshToken);
-        
+
         return {
             id: userId,
             accessToken,
@@ -60,13 +78,23 @@ export class AuthService {
         }
     }
 
-    refreshToken(userId: number) {
-        const payload: AuthJwtPayload = { sub: userId }
-        const token = this.jwtService.sign(payload);
+    async refreshToken(userId: number) {
+        const { accessToken, refreshToken } = await this.generateTokens(userId);
+
+        const hashedRefreshToken = await argon2.hash(refreshToken);
+
+        await this.userService.saveRefreshToken(userId, hashedRefreshToken);
+
         return {
             id: userId,
-            token
+            accessToken,
+            refreshToken
         }
     }
+
+    async logout(userId: number) {
+        await this.userService.saveRefreshToken(userId, null);
+    }
+
 }
 

@@ -34,11 +34,12 @@ export class UserService {
     const user: User = await this.repository.findOne({
       where: {
         id: id
-      }
+      },
+      select: ['firstName', 'lastName', 'avatarUrl', 'hashedRefreshToken']
     });
-    const { password, ...data } = user;
+    // const { password, ...data } = user;
 
-    return data;
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
