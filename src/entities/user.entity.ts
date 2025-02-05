@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, IsNull, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
 import * as bcrypt from 'bcrypt';
+import { Role } from "src/auth/enums/role.enum";
 
 @Entity({ name: 'tb_user' })
 export class User {
@@ -29,6 +30,13 @@ export class User {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @Column({
+        type: 'enum',
+        enum: Role,
+        default: Role.USER
+    })
+    role: Role;
 
     @OneToMany(() => Property, (property) => property.user)
     properties: Property[];

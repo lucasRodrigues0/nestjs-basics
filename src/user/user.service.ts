@@ -35,7 +35,7 @@ export class UserService {
       where: {
         id: id
       },
-      select: ['firstName', 'lastName', 'avatarUrl', 'hashedRefreshToken']
+      select: ['firstName', 'lastName', 'avatarUrl', 'hashedRefreshToken', 'role']
     });
     // const { password, ...data } = user;
 
